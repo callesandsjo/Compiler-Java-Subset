@@ -23,7 +23,7 @@
 %type <Node *> expression  addExpression multExpression factor
 
 %%
-Goal: MainClass ClassDeclarations <EOF>
+Goal: MainClass ClassDeclarations EOF
 {
   $$=new Node("Goal", "");
   $$->children.push_back($1);
@@ -91,7 +91,29 @@ Statement: LM Statements RM
 
 };
 
-Expression:
+Expression: Expression Operations Expression
+          | Expression LB Expression RB
+          | Expression DOT LENTH
+          | Expression DOT Identifier LP Expressions RP
+          | NUM
+          | TRUE
+          | FALSE
+          | Identifier
+          | THIS
+          | NEW INT LB Expression RB
+          | NEW Identifier LP RP
+          | EXMARK Expression
+          | LP Expression RP
+{
+
+};
+
+Expressions: Expression | Expression COLON Expressions |
+{
+
+};
+
+Operations: PLUS | MIN | LESSTHAN | MULT | AND
 {
 
 };
