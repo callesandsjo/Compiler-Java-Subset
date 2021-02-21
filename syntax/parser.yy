@@ -18,12 +18,12 @@
   extern int node_id;
   
 }
-%token <std::string> PLUSOP MULTOP INT LP RP
+%token <std::string> PLUS MULT LESSTHAN MIN AND LP RP LB RB LM RM COMMA SEMICOLON DOT IF ELSE WHILE CLASS EXTENDS PUBLIC STATIC VOID BOOL INT STRING TRUE FALSE THIS NEW SYSTEMOUTPRINT RETURN LENGTH MAIN ID NUM EQ EXMARK
 %token END 0 "end of file"
-%type <Node *> expression  addExpression multExpression factor
+%type <Node *> Goal  MainClass ClassDeclarations ClassDeclaration VarDeclarations VarDeclaration MethodDeclarations MethodDeclaration Arguments Type Statements Statement Expressions Expression Operations Identifier
 
 %%
-Goal: MainClass ClassDeclarations EOF
+Goal: MainClass ClassDeclarations END
 {
   $$=new Node("Goal", "");
   $$->children.push_back($1);
@@ -66,7 +66,7 @@ MethodDeclaration: PUBLIC Type Identifier LP Arguments RP LM VarDeclarations Sta
 
 };
 
-Arguments: Type Identifier | Type Identifier COLON Arguments |
+Arguments: Type Identifier | Type Identifier COMMA Arguments |
 {
 
 };
@@ -93,7 +93,7 @@ Statement: LM Statements RM
 
 Expression: Expression Operations Expression
           | Expression LB Expression RB
-          | Expression DOT LENTH
+          | Expression DOT LENGTH
           | Expression DOT Identifier LP Expressions RP
           | NUM
           | TRUE
@@ -108,7 +108,7 @@ Expression: Expression Operations Expression
 
 };
 
-Expressions: Expression | Expression COLON Expressions |
+Expressions: Expression | Expression COMMA Expressions |
 {
 
 };
@@ -122,31 +122,3 @@ Identifier: ID
 {
 
 };
-
-
-expression: addExpression 
-                          {
-                            $$ = new Node("Expression", "");
-                            $$->children.push_back($1);
-                            root = $$;
-                          };
-
-addExpression: multExpression { $$ = $1; }
-      | addExpression PLUSOP multExpression { 
-                            $$ = new Node("AddExpression", "");
-                            $$->children.push_back($1);
-                            $$->children.push_back($3);
-                          }
-      ;
-
-multExpression: factor  { $$ = $1; }
-        | multExpression MULTOP factor        { 
-                        $$ = new Node("MultExpression", ""); 
-                        $$->children.push_back($1);
-                        $$->children.push_back($3);
-                      }
-        ;
-
-factor: INT  {  $$ = new Node("Int", $1); }
-    | LP expression RP { $$ = $2; }
-    ;
