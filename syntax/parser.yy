@@ -23,6 +23,85 @@
 %type <Node *> expression  addExpression multExpression factor
 
 %%
+Goal: MainClass ClassDeclarations <EOF>
+{
+  $$=new Node("Goal", "");
+  $$->children.push_back($1);
+  root = $$;
+};
+
+MainClass: CLASS Identifier LM PUBLIC STATIC VOID MAIN LP STRING LB RB Identifier RP LM Statement RM RM
+{
+
+};
+
+ClassDeclarations: ClassDeclaration ClassDeclarations |
+{
+
+};
+
+ClassDeclaration: CLASS Identifier EXTENDS Identifier LM VarDeclarations MethodDeclarations RM
+                | CLASS Identifier LM VarDeclarations MethodDeclarations RM
+{
+
+};
+
+VarDeclarations: VarDeclaration VarDeclarations |
+{
+
+};
+
+VarDeclaration: Type Identifier SEMICOLON
+{
+
+};
+
+MethodDeclarations: MethodDeclaration MethodDeclarations |
+{
+
+};
+
+MethodDeclaration: PUBLIC Type Identifier LP Arguments RP LM VarDeclarations Statements RETURN Expression SEMICOLON RM
+{
+
+};
+
+Arguments: Type Identifier | Type Identifier COLON Arguments |
+{
+
+};
+
+Type: INT LB RB | BOOL | INT | Identifier
+{
+
+};
+
+Statements: Statement Statements |
+{
+
+};
+
+Statement: LM Statements RM 
+         | IF LP Expression RP Statement ELSE Statement
+         | WHILE LP Expression RP Statement
+         | SYSTEMOUTPRINT LP Expression RP SEMICOLON
+         | Identifier EQ Expression SEMICOLON
+         | Identifier LB Expression RB EQ Expression SEMICOLON
+{
+
+};
+
+Expression:
+{
+
+};
+
+Identifier: ID
+{
+
+};
+
+
 expression: addExpression 
                           {
                             $$ = new Node("Expression", "");

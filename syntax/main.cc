@@ -1,6 +1,6 @@
 #include<iostream>
 #include "parser.tab.hh"
-
+#include <memory>
 extern std::shared_ptr<Node> root;
 
 void yy::parser::error(std::string const&err)
