@@ -32,48 +32,77 @@ Goal: MainClass ClassDeclarations END
 
 MainClass: CLASS Identifier LM PUBLIC STATIC VOID MAIN LP STRING LB RB Identifier RP LM Statement RM RM
 {
+                    $$ = new Node("MainClass", "");
+                    $$->children.push_back($2);
+                    $$->children.push_back($12);
+                    $$->children.push_back($15);
+                    root = $$;
+};
+
+ClassDeclarations: | ClassDeclaration ClassDeclarations
+{
+                    //$$ = $2;
+                    $$ = new Node("ClassDeclarations", "");
+                    $$->children.push_back($1);
 
 };
 
-ClassDeclarations: ClassDeclaration ClassDeclarations |
-{
+ClassDeclaration: CLASS Identifier EXTENDS Identifier LM VarDeclarations MethodDeclarations RM 
+{                 $$ = new Node("ClassDeclaration", ""); 
+                  $$->children.push_back($2);
+                  $$->children.push_back($4);
+                  $$->children.push_back($6);
+                  $$->children.push_back($7);
+}
+                  | CLASS Identifier LM VarDeclarations MethodDeclarations RM                    
+{                 $$->children.push_back($2);
+                  $$->children.push_back($4);
+                  $$->children.push_back($5);}
+;
 
-};
-
-ClassDeclaration: CLASS Identifier EXTENDS Identifier LM VarDeclarations MethodDeclarations RM
-                | CLASS Identifier LM VarDeclarations MethodDeclarations RM
-{
-
-};
-
-VarDeclarations: VarDeclaration VarDeclarations |
-{
+VarDeclarations: | VarDeclaration VarDeclarations {
+                  $$ = new Node("VarDeclarations", "");
+                  $$->children.push_back($1);
 
 };
 
 VarDeclaration: Type Identifier SEMICOLON
 {
+                  $$ = new Node("ClassDeclaration", "");
+                  $$->children.push_back($2);
 
 };
 
-MethodDeclarations: MethodDeclaration MethodDeclarations |
+MethodDeclarations: | MethodDeclaration MethodDeclarations
 {
-
+                  $$ = new Node("MethodDeclarations", "");
+                  $$->children.push_back($1);
 };
 
 MethodDeclaration: PUBLIC Type Identifier LP Arguments RP LM VarDeclarations Statements RETURN Expression SEMICOLON RM
 {
-
+                  $$ = new Node("MethodDeclaration", "");
+                  $$->children.push_back($3);
+                  $$->children.push_back($5);
+                  $$->children.push_back($8);
+                  $$->children.push_back($9);
+                  $$->children.push_back($11);
 };
 
-Arguments: Type Identifier | Type Identifier COMMA Arguments |
-{
 
+Arguments: | Type Identifier 
+{
+                  $$ = new Node("Arguments", "");
+                  $$->children.push_back($2);
+}
+           | Type Identifier COMMA Arguments
+{
+                  $$ = new Node("Arguments", "");
+                  $$->children.push_back($2);     
 };
 
 Type: INT LB RB | BOOL | INT | Identifier
 {
-
 };
 
 Statements: Statement Statements |
