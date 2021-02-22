@@ -16,7 +16,7 @@ public:
 	int id;
 	string type, value;
 	list<Node*> children;
-	Node(string t, string v) : type(t), value(v) {}
+	Node(string t, string v) : type(t), value(v) {cout << "creating node " << t << " " << v <<  endl;}
 	Node()
 	{
 		type = "uninitialised";
@@ -26,8 +26,17 @@ public:
     for(int i=0; i<depth; i++)
       cout << "  ";
     cout << type << ":" << value << endl;
+	cout << "children=" << children.size() << endl;
     for(auto i=children.begin(); i!=children.end(); i++)
-      (*i)->print_tree(depth+1);
+		{
+      		(*i)->print_tree(depth+1);
+		}
+  }
+
+  void add_child(Node *n)
+  {
+	cout << "adding child: " << n->type << endl;
+	children.push_back(n);
   }
 
   void generate_tree(int &count, ofstream *outStream) {

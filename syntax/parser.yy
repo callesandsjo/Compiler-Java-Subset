@@ -26,17 +26,20 @@
 Goal: MainClass ClassDeclarations END
 {
   $$=new Node("Goal", "");
-  $$->children.push_back($1);
+  //$$->children.push_back($1);
+  $$->add_child($1);
   root = $$;
 };
 
 MainClass: CLASS Identifier LM PUBLIC STATIC VOID MAIN LP STRING LB RB Identifier RP LM Statement RM RM
 {
                     $$ = new Node("MainClass", "");
-                    $$->children.push_back($2);
-                    $$->children.push_back($12);
-                    $$->children.push_back($15);
-                    root = $$;
+                    //$$->children.push_back($2);
+                    //$$->children.push_back($12);
+                    //$$->children.push_back($15);
+                      $$->add_child($2);
+                      $$->add_child($12);
+                      $$->add_child($15);
 };
 
 ClassDeclarations: | ClassDeclaration ClassDeclarations
@@ -47,20 +50,26 @@ ClassDeclarations: | ClassDeclaration ClassDeclarations
 
 };
 
-ClassDeclaration: CLASS Identifier EXTENDS Identifier LM VarDeclarations MethodDeclarations RM 
-{                 $$ = new Node("ClassDeclaration", ""); 
+ClassDeclaration: ClassDeclaration: CLASS Identifier EXTENDS Identifier LM VarDeclarations MethodDeclarations RM 
+{                 
+                  $$ = new Node("ClassDeclaration", ""); 
                   $$->children.push_back($2);
-                  $$->children.push_back($4);
-                  $$->children.push_back($6);
-                  $$->children.push_back($7);
+                  //$$->children.push_back($4);
+                  //$$->children.push_back($6);
+                  //$$->children.push_back($7);
 }
                   | CLASS Identifier LM VarDeclarations MethodDeclarations RM                    
 {                 $$->children.push_back($2);
                   $$->children.push_back($4);
-                  $$->children.push_back($5);}
+                  $$->children.push_back($5);
+}
+                  | CLASS Identifier LM MethodDeclarations RM
+                  | CLASS Identifier EXTENDS Identifier LM MethodDeclarations RM
 ;
 
-VarDeclarations: | VarDeclaration VarDeclarations {
+VarDeclarations: VarDeclaration | VarDeclarations VarDeclaration 
+{
+                  //VarDeclarations: | VarDeclaration VarDeclarations 
                   $$ = new Node("VarDeclarations", "");
                   $$->children.push_back($1);
 
@@ -87,7 +96,9 @@ MethodDeclaration: PUBLIC Type Identifier LP Arguments RP LM VarDeclarations Sta
                   $$->children.push_back($8);
                   $$->children.push_back($9);
                   $$->children.push_back($11);
-};
+}
+                  | PUBLIC Type Identifier LP Arguments RP LM Statements RETURN Expression SEMICOLON RM
+;
 
 
 Arguments: | Type Identifier 
@@ -101,21 +112,57 @@ Arguments: | Type Identifier
                   $$->children.push_back($2);     
 };
 
-Type: INT LB RB | BOOL | INT | Identifier
+Type: INT LB RB| BOOL | INT | Identifier
 {
+    
 };
 
-Statements: Statement Statements |
+Statements: | Statement Statements
 {
+                //$$ = new Node("Statements", "");
+                //$$->add_child($1);
 
 };
 
 Statement: LM Statements RM 
-         | IF LP Expression RP Statement ELSE Statement
+            {
+              $$ = new Node("Statement", ""); 
+              $$->add_child($2);
+            }
+         | IF LP Expression RP Statement ELSE Statement 
+            {
+              $$ = new Node("Statement", "IF"); 
+              $$->add_child($3);
+              $$->add_child($5);
+              $$->add_child($7); 
+            }
          | WHILE LP Expression RP Statement
+            {
+              $$ = new Node("Statement", "WHILE");
+              $$->add_child($3);
+              $$->add_child($5); 
+            }
          | SYSTEMOUTPRINT LP Expression RP SEMICOLON
+            {
+              $$ = new Node("Statement", "Syst print ");
+              $$->add_child($3); 
+            }
          | Identifier EQ Expression SEMICOLON
+            {
+              $$ = new Node("Statement", "Assigning");
+              $$->add_child($1);
+              $$->add_child($3); 
+            }
          | Identifier LB Expression RB EQ Expression SEMICOLON
+            {
+              $$ = new Node("Statement", "list assignment");
+              $$->add_child($1);
+              $$->add_child($3);
+              $$->add_child($6);
+            }
+;
+
+Expressions: Expression | Expression COMMA Expressions |
 {
 
 };
@@ -124,7 +171,7 @@ Expression: Expression Operations Expression
           | Expression LB Expression RB
           | Expression DOT LENGTH
           | Expression DOT Identifier LP Expressions RP
-          | NUM
+          | NUM { $$ = new Node("Expression", $1);}
           | TRUE
           | FALSE
           | Identifier
@@ -137,10 +184,6 @@ Expression: Expression Operations Expression
 
 };
 
-Expressions: Expression | Expression COMMA Expressions |
-{
-
-};
 
 Operations: PLUS | MIN | LESSTHAN | MULT | AND
 {
@@ -149,5 +192,6 @@ Operations: PLUS | MIN | LESSTHAN | MULT | AND
 
 Identifier: ID
 {
+  $$ = new Node("Identifier", $1);
 
 };
