@@ -26,7 +26,7 @@ public:
     for(int i=0; i<depth; i++)
       cout << "  ";
     cout << type << ":" << value << endl;
-	cout << "children=" << children.size() << endl;
+	//cout << "children=" << children.size() << endl;
     for(auto i=children.begin(); i!=children.end(); i++)
 		{
       		(*i)->print_tree(depth+1);
