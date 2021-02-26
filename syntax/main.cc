@@ -1,7 +1,9 @@
 #include<iostream>
 #include "parser.tab.hh"
 #include <memory>
+#include "ST.h"
 extern std::shared_ptr<Node> root;
+extern FILE* yyin;
 
 void yy::parser::error(std::string const&err)
 {
@@ -10,6 +12,18 @@ void yy::parser::error(std::string const&err)
 
 int main(int argc, char **argv)
 {
+  if(argc > 1) {
+    if(!(yyin = fopen(argv[1], "r")))
+    {
+      perror(argv[1]);
+      return 1;
+    }
+    else{
+      yyin = fopen(argv[1], "r"); 
+    }
+      
+  }
+
   std::ofstream outStream;
   outStream.open("tree.dot");
 
@@ -25,8 +39,9 @@ int main(int argc, char **argv)
     outStream.close();
 
     //Build symbol table
-    //ST st;
-    //root->buildST(st);
+    ST st;
+    root->buildST(&st);
+    st.print();
 
     //Semantic analysis
     //root->checkSemantics(st);

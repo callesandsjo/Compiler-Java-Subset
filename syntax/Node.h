@@ -7,6 +7,7 @@
 #include <vector>
 #include <unistd.h>
 #include <sys/wait.h>
+#include "Visitor.h"
 
 using namespace std;
 
@@ -48,6 +49,11 @@ public:
 		  (*i)->generate_tree(count, outStream);
 		  *outStream << "n" << id << " -> n" << (*i)->id << endl;
 	  }
+  }
+
+  void buildST(Visitor *st) {
+	  cout<< "Node "<<this<<" visitor "<<st<< endl;
+		st->visit(this);
   }
 
 };

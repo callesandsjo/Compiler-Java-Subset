@@ -13,4 +13,14 @@ class Fac {
             num_aux = num * (this.ComputeFac(num)) ;
         return num_aux ;
     }
+    public int otherfunc(int num){
+        int ii;
+        ii = num;
+        return ii;
+    }
+      public int otherfunc2(int num){
+        int ii;
+        ii = num;
+        return ii;
+    }
 }
