@@ -2,6 +2,8 @@
 #include "parser.tab.hh"
 #include <memory>
 #include "ST.h"
+#include "TypeChecker.h"
+#include "AssignmentChecker.h"
 extern std::shared_ptr<Node> root;
 extern FILE* yyin;
 extern int yylineno;
@@ -45,6 +47,12 @@ int main(int argc, char **argv)
     st.print();
 
     //Semantic analysis
+
+    TypeChecker tc(&st);
+    root->accept(&tc);
+    AssignmentChecker ac(&st);
+    root->accept(&ac);
+
     //root->checkSemantics(st);
   }
   return 0;

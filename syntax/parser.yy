@@ -216,7 +216,7 @@ Statement: LM Statements RM
             }
          | Identifier LB Expression RB EQ Expression SEMICOLON
             {
-              $$ = new Node("Statement", "list assignment");
+              $$ = new Node("Statement", "List Assigning");
               $$->add_child($1);
               $$->add_child($3);
               $$->add_child($6);

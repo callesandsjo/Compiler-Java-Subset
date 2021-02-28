@@ -12,11 +12,3 @@ class Fac {
         
     }
 }
-class CheckingFac {
-    public int Checking(int num){
-        int c;
-        c = new Fac().ComputeFac(10);
-        return c;
-    }
-}
-

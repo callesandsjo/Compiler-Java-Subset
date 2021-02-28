@@ -59,7 +59,7 @@ public:
   }
 
   void accept(Visitor *st) {
-	  cout<< "Node "<<this<<" visitor "<<st<< endl;
+	  //cout<< "Node "<<this<<" visitor "<<st<< endl;
 		st->visit(this);
   }
 

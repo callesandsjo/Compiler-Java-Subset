@@ -1,5 +1,3 @@
-//Failing due to we only check method scope and not parent
-
 class BubbleSort{
     public static void main(String[] a){
 	System.out.println(new BBS().Start(10));

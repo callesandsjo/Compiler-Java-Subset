@@ -6,17 +6,10 @@ class Factorial{
 
 class Fac {
     public int ComputeFac(int num){
-        int numa;
-        numa = 6;  
+        int[] array;
+        array[1]=6;  
+        brray[1]=6;  
         return 1000;
         
     }
 }
-class CheckingFac {
-    public int Checking(int num){
-        int c;
-        c = new Fac().ComputeFac(10);
-        return c;
-    }
-}
-
