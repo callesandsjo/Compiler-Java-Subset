@@ -13,4 +13,14 @@ class Fac {
             num_aux = num * (this.ComputeFac(num)) ;
         return num_aux ;
     }
+     public int ComputeFac22222(int num){
+        int num_aux ;
+        if (num < 1)
+            num_aux = 1 ;
+        else
+            num_aux = num * (this.ComputeFac(num)) ;
+        return num_aux ;
+    }
+
+
 }
