@@ -15,6 +15,7 @@ using namespace std;
 class Node {
 public:
 	int id;
+	Node *parent;
 	string type, value;
 	list<Node*> children;
 	Node(string t, string v) : type(t), value(v) {cout << "creating node " << t << " " << v <<  endl;}
@@ -34,10 +35,16 @@ public:
 		}
   }
 
-  void add_child(Node *n)
-  {
+  void add_child(Node *n) {
 	cout << "adding child: " << n->type << endl;
+	n->parent = this;
 	children.push_back(n);
+  }
+
+  void prepend_child(Node *n) {
+	cout << "adding child: " << n->type << endl;
+	n->parent = this;
+	children.push_front(n);
   }
 
   void generate_tree(int &count, ofstream *outStream) {
@@ -51,7 +58,7 @@ public:
 	  }
   }
 
-  void buildST(Visitor *st) {
+  void accept(Visitor *st) {
 	  cout<< "Node "<<this<<" visitor "<<st<< endl;
 		st->visit(this);
   }

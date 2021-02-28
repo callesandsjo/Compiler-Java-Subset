@@ -18,22 +18,23 @@ using namespace std;
 
 class ST : public Visitor {
 public:
-    string name;
+    string scope;
+    ST *parent;
     std::list<std::string> listOfStrs = {"Identifier", "MainClass", "MethodDeclaration", "ClassDeclaration"};
     std::map<std::string, string> identif_map;
     std::map<std::string, ST*> method_map;
     std::map<std::string, ST*> class_map;
 
 	list<Node*> children;
-	ST() : name("") {cout << "SKAPADE ST" << endl;}
-    ST(string n) : name(n) {} 
+	ST() : scope(""), parent(0) {cout << "SKAPADE ST" << endl;}
+    ST(string n, ST *p) : scope(n), parent(p) {} 
     ~ST() override {cout << "Destructor " << this << endl;}
   
   void visit(Node *n) {
     Visitor *s = check_node(n);
     for(auto i=n->children.begin(); i!=n->children.end(); i++)
 		{
-            (*i)->buildST(s);
+            (*i)->accept(s);
 
 		}
         //cout << "ADD ST: " << n->value << ":" << n->type << endl;
@@ -43,26 +44,59 @@ public:
       if (it != listOfStrs.end()) {
             cout << "ADD ST: " << n->value << ":" << n->type << endl;
             if (n->type == "Identifier") {
+                cout << "----- " << n->parent->type << endl;
+                if (n->parent->type == "VarDeclaration") {
+                    identif_map.insert({this->scope+"__Id__"+n->value, n->parent->children.front()->value});
+                    return this;
+                }
+                else if (n->parent->type == "MethodDeclaration"){
+                    identif_map.insert({this->scope+"__Id__"+n->value, n->parent->children.front()->value});
+                    return this;
+                }
+                else if (n->parent->type == "ClassDeclaration"){
+                    identif_map.insert({this->scope+"__Id__"+n->value, this->scope+"__Id__"+n->value});
+                    return this;
+                }
+                  else if (n->parent->type == "MainClass"){
+                        if (n->parent->children.front()->value == n->value){
+                            identif_map.insert({this->scope+"__Id__"+n->value, this->scope+"__Id__"+n->value});
+                        }
+                        else {
+                            identif_map.insert({this->scope+"__Id__"+n->value, "String[]"});
+                        }
+                    return this;
+                }
+                else if (n->parent->type == "Arguments"){
+                    std::string my_type = "";
+                     for(auto i=n->parent->children.begin(); i!=n->parent->children.end(); i++)
+                        {
+                            if ((*i)->value == n->value){
+                                break;
+                            }
+                            my_type = (*i)->value;
+                        }
+                    identif_map.insert({this->scope+"__Id__"+n->value, my_type});
+                    return this;
+                }
                 
-                identif_map.insert({this->name+"__Id__"+n->value, n->type});
+                
+                
+                //identif_map.insert({this->scope+"__Id__"+n->value, n->type});
                 return this;
             }
             else if (n->type == "MainClass") {
-                ST *s = new ST(this->name+"__Main__"+n->value); 
-                //class_map[n->value] = s;
+                ST *s = new ST(this->scope+"__Main__"+n->value, this); 
                 class_map.insert({n->value, s});
                 return s;
             }
               else if (n->type == "ClassDeclaration") {
-                ST *s = new ST(this->name+"__Class__"+n->value); 
-                //class_map[n->value] = s;
+                ST *s = new ST(this->scope+"__Class__"+n->value, this); 
                 class_map.insert({n->value, s});
                 return s;
             }
             else if (n->type == "MethodDeclaration")
             {
-                ST *s = new ST(this->name+"__Method__"+n->value);
-                //method_map[n->value] = s;
+                ST *s = new ST(this->scope+"__Method__"+n->value, this);
                 method_map.insert({n->value, s});
                 return s;
             }
@@ -85,8 +119,6 @@ public:
         elem.second->print();
     }
   }
-
-
 };
 
 #endif

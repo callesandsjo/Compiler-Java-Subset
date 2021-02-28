@@ -4,10 +4,12 @@
 #include "ST.h"
 extern std::shared_ptr<Node> root;
 extern FILE* yyin;
+extern int yylineno;
+
 
 void yy::parser::error(std::string const&err)
 {
-  std::cout << "Cannot generate a syntax tree for this input: " << err << std::endl;
+  std::cout << "Cannot generate a syntax tree for this input: " << err << " on line:" << yylineno << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -21,7 +23,6 @@ int main(int argc, char **argv)
     else{
       yyin = fopen(argv[1], "r"); 
     }
-      
   }
 
   std::ofstream outStream;
@@ -40,7 +41,7 @@ int main(int argc, char **argv)
 
     //Build symbol table
     ST st;
-    root->buildST(&st);
+    root->accept(&st);
     st.print();
 
     //Semantic analysis

@@ -49,10 +49,11 @@
 
 (0|[1-9])?[0-9]*            {return yy::parser::make_NUM(yytext);}
 
-"//".*"\n"                        { /* Comment */yylineno++; }
-"/*"(.|"\n")*"*\\"                { /* Comment */yylineno++; }
+"//".*"\n"                        { /* Comment */  }
+"/*"(.|"\n")*"*\\"                { /* Comment */  }
+\n                                {  yylineno++; }
 
-[ \t\n]+                    {}
+[ \t]+                    {}
 
 <<EOF>>                 return yy::parser::make_END();
 %%

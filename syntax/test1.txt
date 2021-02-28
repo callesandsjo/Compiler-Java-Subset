@@ -13,7 +13,7 @@ class Fac {
             num_aux = num * (this.ComputeFac(num)) ;
         return num_aux ;
     }
-     public int ComputeFac22222(int num){
+     public int ComputeFac22222(int num, bool b){
         int num_aux ;
         if (num < 1)
             num_aux = 1 ;
