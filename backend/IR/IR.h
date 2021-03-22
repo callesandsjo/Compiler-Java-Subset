@@ -30,11 +30,50 @@ struct IR : public Visitor{
 
         if(node->type == "Expression")
         {
-            auto it = node->children.begin();
-            TAC *newExp = new Expression(genName(), genExpTAC((*it)), genExpTAC((*++it)), genExpTAC((*++it)));
-            currentBlock->addTAC(newExp);
-            return newExp->result;
+            if(node->value == "index")
+            {
+                
+                auto it = node->children.begin();
+                TAC *newArrayAccessExp = new Assignment(genName(), genExpTAC((*it)) + "[" + genExpTAC((*++it)) + "]");
+                currentBlock->addTAC(newArrayAccessExp);
+                return newArrayAccessExp->result;
+            }
+            else if(node->value == "New")
+            {
+                
+                auto it = node->children.begin();
+                TAC *newArrayNewExp = new Assignment(genName(), genExpTAC((*it)));
+                currentBlock->addTAC(newArrayNewExp);
+                return newArrayNewExp->result;
+            }
+            else if(node->value == "New int")
+            {
+                
+                auto it = node->children.begin();
+                TAC *newArrayNewExp = new Assignment(genName(), genExpTAC((*it)));
+                currentBlock->addTAC(newArrayNewExp);
+                return newArrayNewExp->result;
+            }
+            else if(node->value == "!")
+            {
+                
+                //Unary expression
+                auto it = node->children.begin();
+                TAC *newUnaryExp = new UnaryExpression(genName(), "!", genExpTAC((*it))); //result, lhs, operation, rhs
+                this->currentBlock->addTAC(newUnaryExp);
+            }
+            else if (node->value == "operation")
+            {
+                
+                auto it = node->children.begin();
+                TAC *newExp = new Expression(genName(), genExpTAC((*it)), genExpTAC((*++it)), genExpTAC((*++it)));
+                currentBlock->addTAC(newExp);
+                return newExp->result;
+            }
+
+
         }
+
         return node->value;
     }
     std::string genName()
@@ -46,29 +85,61 @@ struct IR : public Visitor{
     void parseNode(Node *node) {
         if(node->type == "Expression")
         {
-            if(node->value == "!")
+            
+            if(node->value == "index")
             {
+                
+                auto it = node->children.begin();
+                TAC *newArrayAccessExp = new Assignment(genName(), genExpTAC((*it)) + "[" + genExpTAC((*++it)) + "]");
+                currentBlock->addTAC(newArrayAccessExp);
+            }
+            else if(node->value == "New")
+            {
+                
+                auto it = node->children.begin();
+                TAC *newArrayNewExp = new Assignment(genName(), genExpTAC((*it)));
+                currentBlock->addTAC(newArrayNewExp);
+            }
+            else if(node->value == "New int")
+            {
+                
+                auto it = node->children.begin();
+                TAC *newArrayNewExp = new Assignment(genName(), genExpTAC((*it)));
+                currentBlock->addTAC(newArrayNewExp);
+            }
+            else if(node->value == "!")
+            {
+                
                 //Unary expression
                 auto it = node->children.begin();
                 TAC *newUnaryExp = new UnaryExpression(genName(), "!", genExpTAC((*it))); //result, lhs, operation, rhs
                 this->currentBlock->addTAC(newUnaryExp);
             }
-            else
+            else if(node->value == "operation")
             {
+                
                 auto it = node->children.begin();
-                TAC *newExp = new Expression(genName(), genExpTAC((*it)), genExpTAC((*++it)), genExpTAC((*++it))); //result, lhs, operation, rhs
-                this->currentBlock->addTAC(newExp);
+                TAC *newExp = new Expression(genName(), genExpTAC((*it)), genExpTAC((*++it)), genExpTAC((*++it)));
+                currentBlock->addTAC(newExp);
             }
-            
+
+    
         }
-        if(node->type == "Statement")
+            
+        
+        else if(node->type == "Statement")
         {
             if(node->value == "Assigning" || node->value == "ELSE Assigning")
             {
-                std::cout << (node)->type << std::endl;
                 auto it = node->children.begin();
                 TAC *newAssignment = new Assignment((*it)->value, genExpTAC((*++it)));
             }
+            else if (node->value == "List Assigning")
+            {
+                auto it = node->children.begin();
+                TAC *newAssignment = new Assignment((*it)->value + "[" + genExpTAC((*++it)) + "]", genExpTAC((*++it)));
+            }
+            
 
         }
         return;

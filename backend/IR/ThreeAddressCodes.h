@@ -18,13 +18,19 @@ class TAC {
 
 class Expression : public TAC {
     public:
-        Expression(std::string result, std::string left, std::string operation, std::string right) : TAC(result, left, operation, right){}
+        Expression(std::string result, std::string left, std::string operation, std::string right) : TAC(result, left, operation, right){} //x := y op z
     
 };
 
 class UnaryExpression : public TAC {
     public:
-        UnaryExpression(std::string result, std::string left, std::string operation) : TAC(result, left, operation){}
+        UnaryExpression(std::string result, std::string left, std::string operation) : TAC(result, left, operation){} //x := ! y
+    
+};
+
+class NewExpression : public TAC {
+    public:
+        NewExpression(std::string result, std::string operation) : TAC(result, "NEW", operation){} //x := ! y
     
 };
 
