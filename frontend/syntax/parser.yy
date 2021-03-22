@@ -241,8 +241,9 @@ Expressions: Expression
 
 Expression: Expression Operations Expression 
               { 
-                $$ = $2;
+                $$ = $$ = new Node("Expression", "operation"); 
                 $$->add_child($1); 
+                $$->add_child($2);
                 $$->add_child($3); 
               }
           | Expression LB Expression RB 
@@ -265,20 +266,19 @@ Expression: Expression Operations Expression
               }
           | NUM 
               { 
-                $$ = new Node("Expression", $1);
+                $$ = new Node("int", $1);
               }
           | TRUE 
               { 
-                $$ = new Node("Expression", $1);
+                $$ = new Node("bool", $1);
               }
           | FALSE 
               { 
-                $$ = new Node("Expression", $1);
+                $$ = new Node("bool", $1);
               }
           | Identifier 
               { 
-                $$ = new Node("Expression", "Identifier"); 
-                $$->add_child($1);
+                $$ = $1; 
               }
           | THIS 
               { 
@@ -309,23 +309,23 @@ Expression: Expression Operations Expression
 
 Operations: PLUS
               {
-                $$ = new Node("Operations", $1); 
+                $$ = new Node("Operation", $1); 
               }
           | MIN 
               {
-                $$ = new Node("Operations", $1); 
+                $$ = new Node("Operation", $1); 
               }
           | LESSTHAN
               {
-                $$ = new Node("Operations", $1); 
+                $$ = new Node("Operation", $1); 
               }
           | MULT 
               {
-                $$ = new Node("Operations", $1); 
+                $$ = new Node("Operation", $1); 
               }
           | AND
               {
-                $$ = new Node("Operations", $1); 
+                $$ = new Node("Operation", $1); 
               }
 ;
 

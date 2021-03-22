@@ -4,6 +4,7 @@
 #include "frontend/symboltable/ST.h"
 #include "frontend/semantics/TypeChecker.h"
 #include "frontend/semantics/AssignmentChecker.h"
+#include "backend/IR/IR.h"
 extern std::shared_ptr<Node> root;
 extern FILE* yyin;
 extern int yylineno;
@@ -48,12 +49,16 @@ int main(int argc, char **argv)
 
     //Semantic analysis
 
-    TypeChecker tc(&st);
-    root->accept(&tc);
-    AssignmentChecker ac(&st);
-    root->accept(&ac);
+    //TypeChecker tc(&st);
+    //root->accept(&tc);
+    //AssignmentChecker ac(&st);
+    //root->accept(&ac);
 
     //root->checkSemantics(st);
+
+    //Intermediate Representation
+    IR ir;
+    root->accept(&ir);
   }
   return 0;
 }

@@ -6,10 +6,11 @@
 
 
 class TAC {
-    private:
-        std::string result, left, operation, right;
     public:
-        TAC(std::string result, std::string left, std::string operation, std::string right) : result(result), left(left), operation(operation), right(right) {}
+        std::string result, left, operation, right;
+        TAC(std::string result="", std::string left="", std::string operation="", std::string right="") : result(result), left(left), operation(operation), right(right) {
+            printTAC();
+        }
         void printTAC(){
             std::cout << result << " := " << left << " " << operation << " " << right << std::endl;
         }
@@ -18,6 +19,18 @@ class TAC {
 class Expression : public TAC {
     public:
         Expression(std::string result, std::string left, std::string operation, std::string right) : TAC(result, left, operation, right){}
+    
+};
+
+class UnaryExpression : public TAC {
+    public:
+        UnaryExpression(std::string result, std::string left, std::string operation) : TAC(result, left, operation){}
+    
+};
+
+class Assignment : public TAC {
+    public:
+        Assignment(std::string result, std::string left) : TAC(result, left){}
     
 };
 
