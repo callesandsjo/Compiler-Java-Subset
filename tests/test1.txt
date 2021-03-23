@@ -8,14 +8,17 @@ class Fac {
     public int ComputeFac(int num){
         int num_aux ;
         int num_aux222;
-        num_aux222 = 5;
+        num_aux222 = new int[5];
+        while(num < 97)
+        num = 97;
         if (!num )
-            num_aux = num_aux222 ;
+            num_aux = 1;
         else
-            num_aux = 10 + num_aux222 * num_aux;
+            num_aux = 10 + 2 * num_aux;
+            x = num_aux222.length;
         return num_aux ;
     }
-     public int ComputeFac22222(int num, bool b){
+    public int ComputeFac22222(int num, bool b){
         int num_aux ;
         if (num < 1)
             num_aux = 1 ;

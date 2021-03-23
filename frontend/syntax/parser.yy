@@ -121,7 +121,7 @@ MethodDeclaration: PUBLIC Type Identifier LP Arguments RP LM VarDeclarations Sta
                         $$->add_child($5);
                         $$->add_child($8);
                         $$->add_child($9);
-                        $11->value = "RETURN";
+                        //$11->value = "RETURN";
                         $$->add_child($11);
                       }
                   | PUBLIC Type Identifier LP Arguments RP LM Statements RETURN Expression SEMICOLON RM
@@ -131,7 +131,7 @@ MethodDeclaration: PUBLIC Type Identifier LP Arguments RP LM VarDeclarations Sta
                         $$->add_child($3);
                         $$->add_child($5);
                         $$->add_child($8);
-                        $10->value = "RETURN";
+                        //$10->value = "RETURN";
                         $$->add_child($10);
                       }
 ;
@@ -260,9 +260,11 @@ Expression: Expression Operations Expression
           | Expression DOT Identifier LP Expressions RP 
               { 
                 $$ = new Node("Expression", "method call"); 
-                $$->add_child($1); 
-                $$->add_child($3); 
                 $$->add_child($5);
+                $$->add_child($3); 
+                $$->add_child($1); 
+                
+                
               }
           | NUM 
               { 
@@ -301,8 +303,7 @@ Expression: Expression Operations Expression
               }
           | LP Expression RP 
               { 
-                $$ = new Node("Expression", "Expression"); 
-                $$->add_child($2);
+                $$ = $2;
               }
 ;
 
