@@ -8,6 +8,9 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "Visitor.h"
+#include "BBlock.h"
+#include <cstdio>
+
 
 using namespace std;
 
@@ -62,6 +65,17 @@ public:
 	  //cout<< "Node "<<this<<" visitor "<<st<< endl;
 		st->visit(this);
   }
+
+	std::string genName() {
+		char buffer[100];
+		static int counter = 0;
+		counter++;
+		std::sprintf(buffer, "block_%d", counter);
+		return buffer;
+		}
+		
+	virtual std::string genIR(BBlock *currblock) {return "";}
+
 
 };
 

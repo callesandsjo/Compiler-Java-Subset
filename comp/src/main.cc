@@ -4,7 +4,6 @@
 #include "ST.h"
 #include "TypeChecker.h"
 #include "AssignmentChecker.h"
-#include "BBlock.h"
 extern std::shared_ptr<Node> root;
 extern FILE* yyin;
 extern int yylineno;
@@ -56,8 +55,23 @@ int main(int argc, char **argv)
 
     //root->checkSemantics(st);
 
-    BBlock bb;
-    root->genIR(&bb);
+    BBlock* b = new BBlock();
+    b->name = "start";
+    Node::entry_blocks->insert(std::pair<std::string, BBlock*>(b->name, b));
+    std::string ret;
+    root->genIR(b, ret);
+    std::ofstream outIrStream;
+    outIrStream.open("IRtree.dot");
+    outIrStream << "digraph {" << std::endl;
+    outIrStream << "graph [splines=ortho]" << std::endl;
+    outIrStream << "node [shape=box];" << std::endl;
+     for (auto const &elem : (*Node::entry_blocks))
+      {
+        elem.second->generate_tree(&outIrStream);
+       
+      }
+    outIrStream << "}" << std::endl;
+    outIrStream.close();
 
   }
   return 0;

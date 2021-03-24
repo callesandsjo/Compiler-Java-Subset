@@ -1,0 +1,26 @@
+digraph {
+graph [splines=ortho]
+node [shape=box];
+Bar1_foo [label="Bar1_foo\n aux := 0 Copy \n aux2 := 0 Copy \n aux := 1 Copy \n aux2 := true Copy \n this :=  Parameter \n aux :=  Parameter \n _t9 := Bar1.foo2 Call 2\n aux := _t9 Copy \n this :=  Parameter \n aux2 :=  Parameter \n 5 :=  Parameter \n 2 :=  Parameter \n _t10 := Bar1.foo3 Call 4\n aux := _t10 Copy \n aux :=  Return \n"];
+Bar1_foo2 [label="Bar1_foo2\n _t7 := p1 Copy \n _t8 := p1 LessThan 2\n Bblock_10 := _t8 iffalse \n Bblock_9 :=  goto \n"];
+Bar1_foo2 -> Bblock_9 [xlabel="true"] 
+Bblock_9 [label="Bblock_9\n  := 10 System.print \n block_21 :=  goto \n"];
+Bblock_9 -> block_21 [xlabel="true"] 
+block_21 [label="block_21\n 1 :=  Return \n"];
+Bar1_foo2 -> Bblock_10 [xlabel="false"] 
+Bblock_10 [label="Bblock_10\n  := 0 System.print \n block_21 :=  goto \n"];
+Bblock_10 -> block_21 [xlabel="true"] 
+block_21 [label="block_21\n 1 :=  Return \n"];
+Bar1_foo3 [label="Bar1_foo3\n _t3 := p3 Copy \n _t4 := p2 Copy \n _t5 := p1 Copy \n Bblock_6 := p3 iffalse \n Bblock_5 :=  goto \n"];
+Bar1_foo3 -> Bblock_5 [xlabel="true"] 
+Bblock_5 [label="Bblock_5\n  := 1 System.print \n block_13 :=  goto \n"];
+Bblock_5 -> block_13 [xlabel="true"] 
+block_13 [label="block_13\n  := p1 System.print \n _t6 := p2 - p1\n  := _t6 System.print \n 4 :=  Return \n"];
+Bar1_foo3 -> Bblock_6 [xlabel="false"] 
+Bblock_6 [label="Bblock_6\n  := 0 System.print \n block_13 :=  goto \n"];
+Bblock_6 -> block_13 [xlabel="true"] 
+block_13 [label="block_13\n  := p1 System.print \n _t6 := p2 - p1\n  := _t6 System.print \n 4 :=  Return \n"];
+start [label="start\n"];
+start -> Bar_main [xlabel="true"] 
+Bar_main [label="Bar_main\n _t1 :=  NEW Bar1\n _t1 :=  Parameter \n _t2 := Bar1.foo Call 1\n  := _t2 System.print \n"];
+}

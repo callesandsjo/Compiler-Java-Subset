@@ -5,9 +5,11 @@ class Factorial{
 }
 
 class Fac {
-    public int ComputeFac(int num){
+    public int ComputeFac(int num, int num2){
         int numa;
-        numa = 6;  
+        int numb;
+        numa = 6;
+        numb = 7;  
         return 1000;
         
     }
@@ -15,7 +17,7 @@ class Fac {
 class CheckingFac {
     public int Checking(int num){
         int c;
-        c = new Fac().ComputeFac(10);
+        c = new Fac().ComputeFac(10, 11);
         return c;
     }
 }

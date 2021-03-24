@@ -1,1 +1,2 @@
-# DV1585kompilator
+# minijavacompiler
+Minijava compiler 
