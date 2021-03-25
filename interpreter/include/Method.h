@@ -8,7 +8,7 @@
 class Method
 {
 public:
-    std::vector<Instruction*> instructions;
+    std::vector<Instruction*> instructions; // list of instructions
     std::map<std::string, int> variables;
     bool isStart;
     std::string name;

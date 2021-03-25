@@ -8,7 +8,7 @@ class Activation
 {
 public:
     int pc; //program counter
-    std::map<std::string, int> local_variable;
+    std::map<std::string, int> local_variable; // maps all variablename to its value
     Method *method;
     bool debug;
     Activation(int i, Method* m) {method = m; pc = i;}
