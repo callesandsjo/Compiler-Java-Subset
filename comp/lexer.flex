@@ -47,7 +47,7 @@
 [a-zA-Z]([a-zA-Z0-9]|_)*    {return yy::parser::make_ID(yytext);}
 
 
-(0|[1-9])?[0-9]*            {return yy::parser::make_NUM(yytext);}
+[0-9]+            {return yy::parser::make_NUM(yytext);}
 
 "//".*"\n"                        { /* Comment */  }
 "/*"(.|"\n")*"*\\"                { /* Comment */  }

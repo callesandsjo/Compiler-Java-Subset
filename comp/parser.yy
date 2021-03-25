@@ -21,8 +21,10 @@
 }
 %token <std::string> PLUS MULT LESSTHAN MIN AND LP RP LB RB LM RM COMMA SEMICOLON DOT IF ELSE WHILE CLASS EXTENDS PUBLIC STATIC VOID BOOL INT STRING TRUE FALSE THIS NEW SYSTEMOUTPRINT RETURN LENGTH MAIN ID NUM EQ EXMARK
 %token END 0 "end of file"
-%type <Node *> Goal  MainClass ClassDeclarations ClassDeclaration VarDeclarations VarDeclaration MethodDeclarations MethodDeclaration Arguments Type Statements Statement Expressions Expression Identifier MultFactor SubTerm
+%type <Node *> Goal  MainClass ClassDeclarations ClassDeclaration VarDeclarations VarDeclaration MethodDeclarations MethodDeclaration Arguments Type Statements Statement Expressions Expression Identifier Term Factor
 
+%left ADD MIN
+%left MULT
 %%
 Goal: MainClass ClassDeclarations END
                       {
@@ -253,27 +255,24 @@ Expression: Expression AND Expression
                 $$->add_child($3); 
               }
           |
-          Expression PLUS Expression   
+          Expression PLUS Term   
               { 
                 $$ = NodeFact::newNode("AddExpression", $2);
                 $$->add_child($1); 
                 $$->add_child($3); 
               }
           |
-          SubTerm MIN SubTerm   
+          Expression MIN Term   
               { 
                 $$ = NodeFact::newNode("SubExpression", $2);
                 $$->add_child($1); 
                 $$->add_child($3); 
               }
-          |  MultFactor MULT MultFactor 
-              { 
-                $$ = NodeFact::newNode("MulExpression", $2);
-                $$->add_child($1); 
-                $$->add_child($3); 
-              }
+          |  Term
+          {
+              $$ = $1;
+          }
           | 
-          
           Expression LB Expression RB 
               { 
                 $$ = NodeFact::newNode("Expression", "index"); 
@@ -291,10 +290,6 @@ Expression: Expression AND Expression
                 $$->add_child($1); 
                 $$->add_child(NodeFact::newNode("Identifier", $3->value));
                 $$->add_child($5);
-              }
-          | NUM 
-              { 
-                $$ = NodeFact::newNode("Expression", $1);
               }
           | TRUE 
               { 
@@ -327,50 +322,43 @@ Expression: Expression AND Expression
                 $$ = NodeFact::newNode("ExpressionExmark", "!"); 
                 $$->add_child($2);
               }
-          | LP Expression RP 
-              { 
-                $$ = NodeFact::newNode("Expression", "ExpressionWKid"); 
-                $$->add_child($2);
-              }
+          
 ;
 
-
-MultFactor: ID
-              {
-                $$ = NodeFact::newNode("Identifier", $1);
-              }
-        |
-        NUM
-              {
-                $$ = NodeFact::newNode("Expression", $1);
-              }
-        | LP Expression RP 
-              { 
-                $$ = NodeFact::newNode("Expression", "ExpressionWKid"); 
-                $$->add_child($2);
-              }
-;
-
-SubTerm: MultFactor MULT MultFactor
-              {
-                $$ = NodeFact::newNode("MulExpression", $2);
+Term: 
+        Term MULT Factor
+        {
+           $$ = NodeFact::newNode("MulExpression", $2);
                 $$->add_child($1); 
                 $$->add_child($3); 
-              }
-        | ID
-              {
-                $$ = NodeFact::newNode("Identifier", $1);
-              }
-        |
-        NUM
-              {
-                $$ = NodeFact::newNode("Expression", $1);
-              }
-        | LP Expression RP 
-              { 
-                $$ = NodeFact::newNode("Expression", "ExpressionWKid"); 
-                $$->add_child($2);
-              }
+        }
+      |
+        Factor
+        {
+          $$ = $1;
+        }
+;
+
+Factor: | LP Expression RP 
+        { 
+          $$ = NodeFact::newNode("Expression", "ExpressionWKid"); 
+          $$->add_child($2);
+        }
+        | MIN Factor
+        {
+          $$ = NodeFact::newNode("SubExpression", $1);
+          $$->add_child($2);
+        }
+        | NUM
+        {
+           $$ = NodeFact::newNode("Expression", $1);
+        }
+        
+      |
+        ID
+        {
+          $$ = NodeFact::newNode("Identifier", $1);
+        }
 ;
 
 Identifier: ID
