@@ -21,7 +21,7 @@
 }
 %token <std::string> PLUS MULT LESSTHAN MIN AND LP RP LB RB LM RM COMMA SEMICOLON DOT IF ELSE WHILE CLASS EXTENDS PUBLIC STATIC VOID BOOL INT STRING TRUE FALSE THIS NEW SYSTEMOUTPRINT RETURN LENGTH MAIN ID NUM EQ EXMARK
 %token END 0 "end of file"
-%type <Node *> Goal  MainClass ClassDeclarations ClassDeclaration VarDeclarations VarDeclaration MethodDeclarations MethodDeclaration Arguments Type Statements Statement Expressions Expression Operations Identifier
+%type <Node *> Goal  MainClass ClassDeclarations ClassDeclaration VarDeclarations VarDeclaration MethodDeclarations MethodDeclaration Arguments Type Statements Statement Expressions Expression Identifier MultFactor SubTerm
 
 %%
 Goal: MainClass ClassDeclarations END
@@ -239,13 +239,42 @@ Expressions: Expression
 }
 ;
 
-Expression: Expression Operations Expression 
+Expression: Expression AND Expression 
               { 
-                $$ = $2;
+                $$ = NodeFact::newNode("AndOperation", $2);
                 $$->add_child($1); 
                 $$->add_child($3); 
               }
-          | Expression LB Expression RB 
+          |
+          Expression LESSTHAN Expression 
+              { 
+                $$ = NodeFact::newNode("LessThanOperation", $2); 
+                $$->add_child($1); 
+                $$->add_child($3); 
+              }
+          |
+          Expression PLUS Expression   
+              { 
+                $$ = NodeFact::newNode("AddExpression", $2);
+                $$->add_child($1); 
+                $$->add_child($3); 
+              }
+          |
+          SubTerm MIN SubTerm   
+              { 
+                $$ = NodeFact::newNode("SubExpression", $2);
+                $$->add_child($1); 
+                $$->add_child($3); 
+              }
+          |  MultFactor MULT MultFactor 
+              { 
+                $$ = NodeFact::newNode("MulExpression", $2);
+                $$->add_child($1); 
+                $$->add_child($3); 
+              }
+          | 
+          
+          Expression LB Expression RB 
               { 
                 $$ = NodeFact::newNode("Expression", "index"); 
                 $$->add_child($1); 
@@ -306,25 +335,41 @@ Expression: Expression Operations Expression
 ;
 
 
-Operations: PLUS
+MultFactor: ID
               {
-                $$ = NodeFact::newNode("AddExpression", $1);
+                $$ = NodeFact::newNode("Identifier", $1);
               }
-          | MIN 
+        |
+        NUM
               {
-                $$ = NodeFact::newNode("SubExpression", $1);
+                $$ = NodeFact::newNode("Expression", $1);
               }
-          | LESSTHAN
-              {
-                $$ = NodeFact::newNode("LessThanOperation", $1); 
+        | LP Expression RP 
+              { 
+                $$ = NodeFact::newNode("Expression", "ExpressionWKid"); 
+                $$->add_child($2);
               }
-          | MULT 
+;
+
+SubTerm: MultFactor MULT MultFactor
               {
-                $$ = NodeFact::newNode("MulExpression", $1);
+                $$ = NodeFact::newNode("MulExpression", $2);
+                $$->add_child($1); 
+                $$->add_child($3); 
               }
-          | AND
+        | ID
               {
-                $$ = NodeFact::newNode("AndOperation", $1); 
+                $$ = NodeFact::newNode("Identifier", $1);
+              }
+        |
+        NUM
+              {
+                $$ = NodeFact::newNode("Expression", $1);
+              }
+        | LP Expression RP 
+              { 
+                $$ = NodeFact::newNode("Expression", "ExpressionWKid"); 
+                $$->add_child($2);
               }
 ;
 

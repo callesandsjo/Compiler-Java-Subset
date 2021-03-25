@@ -48,6 +48,6 @@ $(BIN_DIR) $(OBJ_DIR):
 	mkdir -p $@
 
 clean:
-	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)  parser.tab.cc parser.tab.hh lex.yy.c lex.yy.o parser.tab.o
+	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)  parser.tab.cc parser.tab.hh lex.yy.c lex.yy.o parser.tab.o IRtree.dot irtree.pdf tree.dot tree.pdf stack.hh
 
 -include $(OBJ:.o=.d)
