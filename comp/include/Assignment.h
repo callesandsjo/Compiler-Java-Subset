@@ -11,7 +11,13 @@ public:
     {
         if (getOp() == "System.print")
         {
-            *outStream << instructionCounter++ << " iload " << getLns() << std::endl;
+         if (isNumber(getLns()))
+                {
+                    *outStream << instructionCounter++ << " iconst " << getLns() << std::endl;
+                }
+                else {
+                    *outStream << instructionCounter++ << " iload " << getLns() << std::endl;
+                }
             *outStream << instructionCounter++ << getInstruction(getOp()) << std::endl;
             return;
         }

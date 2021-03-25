@@ -17,6 +17,10 @@ public:
         {
             *outStream << instructionCounter++ << " iconst " << getLns() << std::endl;
         }
+        else if (isBoolString(getLns()))
+        {
+            *outStream << instructionCounter++ << " iconst " << (getLns() == "false" ? 0 : 1)<< std::endl;
+        }
         else
         {
             *outStream << instructionCounter++ << " iload " << getLns() << std::endl;

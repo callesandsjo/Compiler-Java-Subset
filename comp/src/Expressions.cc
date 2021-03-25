@@ -7,7 +7,7 @@
 BBlock *Expressions::genIR(BBlock *currblock, std::string &ret_name)
 {
     int count = 0;
-    for (auto i = children.begin(); i != children.end(); i++)
+    for (auto i = children.rbegin(); i != children.rend(); i++)
     {
         count++;
         std::string p;

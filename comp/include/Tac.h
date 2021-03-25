@@ -28,7 +28,9 @@ public:
 
         return true;
     }
-
+    bool isBoolString(std::string c) {
+        return c=="true"? true: (c=="false" ? true: false);
+    }
     void setOp(std::string s)
     {
         op = s;
