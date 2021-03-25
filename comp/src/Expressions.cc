@@ -12,7 +12,7 @@ BBlock *Expressions::genIR(BBlock *currblock, std::string &ret_name)
         count++;
         std::string p;
         (*i)->genIR(currblock, p);
-        Tac param = Parameter(p);
+        Tac *param = new Parameter(p);
         currblock->tacinstructions.push_back(param);
     }
     // returning amount of params to methodcall

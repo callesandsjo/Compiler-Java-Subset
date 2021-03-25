@@ -7,10 +7,10 @@
 
 class Expressions : public Node
 {
-    public:
-        Expressions(std::string v): Node("Expressions",v){}
+public:
+    Expressions(std::string v) : Node("Expressions", v) {}
 
-	//MethodCall(std::string _f, std::string _N, std::string _result) : Tac("Call", _f, _N, _result) {}
-    BBlock* genIR(BBlock *currblock, std::string &ret_name);
+    //MethodCall(std::string _f, std::string _N, std::string _result) : Tac("Call", _f, _N, _result) {}
+    BBlock *genIR(BBlock *currblock, std::string &ret_name);
 };
 #endif

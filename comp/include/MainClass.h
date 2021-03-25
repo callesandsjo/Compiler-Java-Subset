@@ -8,10 +8,10 @@
 
 class MainClass : public Node
 {
-    public:
-        MainClass(std::string v): Node("MainClass",v){}
+public:
+    MainClass(std::string v) : Node("MainClass", v) {}
 
-	//MethodCall(std::string _f, std::string _N, std::string _result) : Tac("Call", _f, _N, _result) {}
-    BBlock* genIR(BBlock *currblock, std::string &ret_name);
+    //MethodCall(std::string _f, std::string _N, std::string _result) : Tac("Call", _f, _N, _result) {}
+    BBlock *genIR(BBlock *currblock, std::string &ret_name);
 };
 #endif

@@ -64,7 +64,8 @@ ClassDeclaration: CLASS Identifier EXTENDS Identifier LM VarDeclarations MethodD
                         $$->add_child($7);
                       }
                   | CLASS Identifier LM VarDeclarations MethodDeclarations RM                    
-                      {                 
+                      { 
+                        std::cout << "forstaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" << std::endl;       
                         $$ = NodeFact::newNode("ClassDeclaration", $2->value); 
                         $$->add_child(NodeFact::newNode("Identifier", $2->value));
                         $$->add_child($4);
@@ -72,6 +73,7 @@ ClassDeclaration: CLASS Identifier EXTENDS Identifier LM VarDeclarations MethodD
                       }
                   | CLASS Identifier LM MethodDeclarations RM
                       {
+                        std::cout << "andraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" << std::endl;       
                         $$ = NodeFact::newNode("ClassDeclaration", $2->value); 
                         $$->add_child(NodeFact::newNode("Identifier", $2->value));
                         $$->add_child($4);
@@ -118,6 +120,7 @@ MethodDeclarations:
 
 MethodDeclaration: PUBLIC Type Identifier LP Arguments RP LM VarDeclarations Statements RETURN Expression SEMICOLON RM
                       {
+                        std::cout << "ovajjjjjjjjjjjjjjjjjjjjjjjjjjjjjj111111111111111111" <<std::endl;
                         $$ = NodeFact::newNode("MethodDeclaration", $3->value);
                         $$->add_child(NodeFact::newNode("Type", $2->value));
                         $$->add_child(NodeFact::newNode("Identifier", $3->value));
@@ -128,6 +131,7 @@ MethodDeclaration: PUBLIC Type Identifier LP Arguments RP LM VarDeclarations Sta
                       }
                   | PUBLIC Type Identifier LP Arguments RP LM Statements RETURN Expression SEMICOLON RM
                       {
+                        std::cout << "ovajjjjjjjjjjjjjjjjjjjjjjjjjjjjjj2222222222222222222222" <<std::endl;
                         $$ = NodeFact::newNode("MethodDeclaration", $3->value);
                         $$->add_child($2);
                         $$->add_child(NodeFact::newNode("Identifier", $3->value));

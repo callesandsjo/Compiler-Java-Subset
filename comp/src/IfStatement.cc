@@ -30,13 +30,13 @@ BBlock* IfStatement::genIR(BBlock *currblock, std::string &ret_name)
         jBlock->name = genName();
         //currblock->generate_tree();
 
-        Tac in = CondJump("iffalse", operation, fBlock->name);
+        Tac *in = new CondJump("iffalse", operation, fBlock->name);
         currblock->tacinstructions.push_back(in);
 
-        Tac un = Jump(tBlock->name);
+        Tac *un = new Jump(tBlock->name);
         currblock->tacinstructions.push_back(un);
 
-        Tac un2 = Jump(jBlock->name);
+        Tac *un2 = new Jump(jBlock->name);
         tb->tacinstructions.push_back(un2);
         fb->tacinstructions.push_back(un2);
 

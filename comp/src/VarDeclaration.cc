@@ -14,7 +14,7 @@ BBlock *VarDeclaration::genIR(BBlock *currblock, std::string &ret_name)
         i++;
         std::string var;
         (*i)->genIR(currblock, var);
-        Tac in = Copy("0", var);
+        Tac *in = new Copy("0", var);
         currblock->tacinstructions.push_back(in);
     }
     return currblock;

@@ -3,6 +3,7 @@
 #include "Tac.h"
 #include "Assignment.h"
 #include "BBlock.h"
+#include "StopTac.h"
 
 BBlock* MainClass::genIR(BBlock *currblock, std::string &ret_name)
 {
@@ -21,6 +22,10 @@ BBlock* MainClass::genIR(BBlock *currblock, std::string &ret_name)
         std::advance(it, 1);
         std::string tmp;
         (*it)->genIR(currblock, tmp);
+
+        // Add stop TAC
+        Tac *stop = new StopTac();
+        currblock->tacinstructions.push_back(stop);
 
         return currblock;
 }

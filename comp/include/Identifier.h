@@ -8,10 +8,10 @@
 
 class Identifier : public Node
 {
-    public:
-        Identifier(std::string v): Node("Identifier",v){}
+public:
+    Identifier(std::string v) : Node("Identifier", v) {}
 
-	//MethodCall(std::string _f, std::string _N, std::string _result) : Tac("Call", _f, _N, _result) {}
-    BBlock* genIR(BBlock *currblock, std::string &ret_name);
+    //MethodCall(std::string _f, std::string _N, std::string _result) : Tac("Call", _f, _N, _result) {}
+    BBlock *genIR(BBlock *currblock, std::string &ret_name);
 };
 #endif

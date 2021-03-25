@@ -11,19 +11,29 @@ private:
     std::string op, lns, rns, result;
 
 public:
-    Tac(): op(""), lns(""), rns(""), result("") {}
-	Tac(std::string _op, std::string _lns, std::string _rns, std::string _result) : op(_op), lns(_lns), rns(_rns), result(_result) {}
-    virtual void dump() {printf("%s := %s %s %s\n", result.c_str(), lns.c_str(), op.c_str(), rns.c_str());}
-    virtual void dump( std::ofstream *outStream) 
+    Tac() : op(""), lns(""), rns(""), result("") {}
+    Tac(std::string _op, std::string _lns, std::string _rns, std::string _result) : op(_op), lns(_lns), rns(_rns), result(_result) {}
+    virtual void dump() { printf("%s := %s %s %s\n", result.c_str(), lns.c_str(), op.c_str(), rns.c_str()); }
+    virtual void dump(std::ofstream *outStream)
     {
-        *outStream <<" "<<result<<" := "<<lns<<" "<<op<<" "<<rns<<"\\n";
+        *outStream << " " << result << " := " << lns << " " << op << " " << rns << "\\n";
+    }
+    virtual void generateCode(std::ofstream *outStream, int &instructionCounter) {dump(outStream);};
+
+    bool isNumber(std::string s)
+    {
+        for (int i = 0; i < s.length(); i++)
+            if (isdigit(s[i]) == false)
+                return false;
+
+        return true;
     }
 
     void setOp(std::string s)
     {
         op = s;
     }
-    
+
     std::string getOp()
     {
         return op;
@@ -33,7 +43,7 @@ public:
     {
         lns = s;
     }
-    
+
     std::string getLns()
     {
         return lns;
@@ -43,7 +53,7 @@ public:
     {
         rns = s;
     }
-    
+
     std::string getRns()
     {
         return rns;

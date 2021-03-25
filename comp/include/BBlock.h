@@ -13,7 +13,7 @@ public:
     std::string name;
     Tac condition;
     BBlock *trueEdge, *falseEdge;
-    std::list<Tac> tacinstructions;
+    std::list<Tac*> tacinstructions;
 
     BBlock() : trueEdge(nullptr), falseEdge(nullptr) { name = genName(); }
 
@@ -34,7 +34,7 @@ public:
         }
         for (auto i = tacinstructions.begin(); i != tacinstructions.end(); i++)
         {
-            (*i).dump(outStream);
+            (*i)->dump(outStream);
         }
         *outStream << "\"];" << std::endl;
         if (trueEdge != 0)
@@ -46,6 +46,24 @@ public:
         {
             *outStream << name << " -> " << falseEdge->name << " [xlabel=\"false\"] " << std::endl;
             falseEdge->generate_tree(outStream);
+        }
+    }
+    void generateCode(std::ofstream *outStream, int &instructionCounter)
+    {
+        std::cout << "generating code for bblock" << name << std::endl; 
+        *outStream << name << ":" << std::endl;
+        for (auto i = tacinstructions.begin(); i != tacinstructions.end(); i++)
+        {
+            std::cout << "generate code for " << (*i)->getOp() << std::endl;
+            (*i)->generateCode(outStream, instructionCounter);
+        }
+        if (trueEdge != 0)
+        {
+            trueEdge->generateCode(outStream, instructionCounter);
+        }
+        if (falseEdge != 0)
+        {
+            falseEdge->generateCode(outStream, instructionCounter);
         }
     }
 };

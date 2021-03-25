@@ -20,9 +20,7 @@ BBlock *WhileStatement::genIR(BBlock *currblock, std::string &ret_name)
         std::advance(it, 1);
         BBlock *loopblock = new BBlock();
         std::string lt;
-        BBlock* b = (*it)->genIR(loopblock, lt);
-
-
+        BBlock *b = (*it)->genIR(loopblock, lt);
 
         BBlock *jBlock = new BBlock();
         jBlock->name = genName();
@@ -31,13 +29,13 @@ BBlock *WhileStatement::genIR(BBlock *currblock, std::string &ret_name)
         headerblock->trueEdge = loopblock;
         headerblock->falseEdge = jBlock;
 
-        Tac headblockToJoinBlock = CondJump("iffalse", ht, jBlock->name);
+        Tac *headblockToJoinBlock = new CondJump("iffalse", ht, jBlock->name);
         headerblock->tacinstructions.push_back(headblockToJoinBlock);
 
-        Tac headblockToLoopblock = Jump(loopblock->name);
+        Tac *headblockToLoopblock = new Jump(loopblock->name);
         headerblock->tacinstructions.push_back(headblockToLoopblock);
 
-        Tac loopblockToHeadbock = Jump(headerblock->name);
+        Tac *loopblockToHeadbock = new Jump(headerblock->name);
         b->tacinstructions.push_back(loopblockToHeadbock);
 
         currblock->trueEdge = headerblock;

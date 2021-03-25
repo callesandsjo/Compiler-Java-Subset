@@ -11,7 +11,7 @@ BBlock* ExpressionNewArray::genIR(BBlock *currblock, std::string &ret_name)
     std::string amount_elem;
     (*it)->genIR(currblock, amount_elem);
     
-    Tac in = NewArray(amount_elem, value, tmp);
+    Tac *in = new NewArray(amount_elem, value, tmp);
     currblock->tacinstructions.push_back(in);
     return currblock;
 }

@@ -19,8 +19,8 @@ BBlock *MethodCall::genIR(BBlock *currblock, std::string &ret_name)
     if (object != "this")
     {
         // last elem is expressionNewTac comming from below iterated leaf
-        Tac last_elem = currblock->tacinstructions.back();
-        classname = last_elem.getRns(); // Rns is basically the type in Tac New
+        Tac *last_elem = currblock->tacinstructions.back();
+        classname = last_elem->getRns(); // Rns is basically the type in Tac New
     }
 
     // method name
@@ -28,7 +28,7 @@ BBlock *MethodCall::genIR(BBlock *currblock, std::string &ret_name)
     std::string methodname;
     (*it)->genIR(currblock, methodname);
 
-    Tac param = Parameter(object);
+    Tac *param = new Parameter(object);
     currblock->tacinstructions.push_back(param);
 
     std::advance(it, 1);
@@ -37,7 +37,7 @@ BBlock *MethodCall::genIR(BBlock *currblock, std::string &ret_name)
     int p = atoi(num_params.c_str()) + 1;
 
     std::string tmp = genTmpName();
-    Tac mcall = MethodCallTac(classname + "." + methodname, std::to_string(p), tmp);
+    Tac *mcall = new MethodCallTac(classname + "." + methodname, std::to_string(p), tmp);
     currblock->tacinstructions.push_back(mcall);
     ret_name = tmp;
     return currblock;

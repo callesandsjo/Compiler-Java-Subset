@@ -2,6 +2,7 @@
 SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
+OUT_DIR := out
 
 EXE := $(BIN_DIR)/compiler
 SRC := $(wildcard $(SRC_DIR)/*.cc)
@@ -17,7 +18,7 @@ CC		:= g++
 all: $(EXE) lex.yy.o  parser.tab.o
 
 parser.tab.cc: parser.yy
-	bison parser.yy
+	bison -v parser.yy
 
 lex.yy.c: lexer.flex parser.tab.cc
 	flex lexer.flex
@@ -29,10 +30,10 @@ lex.yy.o: lex.yy.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 tree:
-	dot -Tpdf tree.dot -otree.pdf
-	dot -Tpdf IRtree.dot -oirtree.pdf
+	dot -Tpdf $(OUT_DIR)/tree.dot -o$(OUT_DIR)/tree.pdf
+	dot -Tpdf $(OUT_DIR)/IRtree.dot -o$(OUT_DIR)/irtree.pdf
 
-$(EXE): parser.tab.o lex.yy.o $(OBJ) | $(BIN_DIR)
+$(EXE): parser.tab.o lex.yy.o $(OBJ) | $(BIN_DIR) $(OUT_DIR)
 	@echo
 	@echo Create $@
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
@@ -44,10 +45,10 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc | $(OBJ_DIR)
 
 	@sed -e 's/\#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' -e '/^$$/ d' -e 's/$$/ :/' < obj/$*.d>> obj/$*.d
 
-$(BIN_DIR) $(OBJ_DIR):
+$(BIN_DIR) $(OBJ_DIR) $(OUT_DIR):
 	mkdir -p $@
 
 clean:
-	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)  parser.tab.cc parser.tab.hh lex.yy.c lex.yy.o parser.tab.o IRtree.dot irtree.pdf tree.dot tree.pdf stack.hh
+	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)  $(OUT_DIR) parser.tab.cc parser.tab.hh lex.yy.c lex.yy.o parser.tab.o *.byteCode
 
 -include $(OBJ:.o=.d)

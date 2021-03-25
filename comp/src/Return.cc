@@ -13,7 +13,7 @@ BBlock *Return::genIR(BBlock *currblock, std::string &ret_name)
         std::string identifier;
         (*it)->genIR(currblock, identifier);
 
-        Tac in = ReturnTac(identifier);
+        Tac *in = new ReturnTac(identifier);
         currblock->tacinstructions.push_back(in);
         return currblock;
 }

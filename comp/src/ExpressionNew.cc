@@ -11,7 +11,7 @@ BBlock* ExpressionNew::genIR(BBlock *currblock, std::string &ret_name)
     std::string identifier;
     (*it)->genIR(currblock, identifier);
     
-    Tac in = New(identifier, tmp);
+    Tac *in = new New(identifier, tmp);
     currblock->tacinstructions.push_back(in);
     ret_name = tmp;
     return currblock;

@@ -15,7 +15,7 @@ BBlock* StatementAssigning::genIR(BBlock *currblock, std::string &ret_name)
     std::string methodcallResult;
     (*it)->genIR(currblock, methodcallResult);
 
-    Tac in = Copy(methodcallResult, identifier);
+    Tac *in = new Copy(methodcallResult, identifier);
     currblock->tacinstructions.push_back(in);
     return currblock;
 }

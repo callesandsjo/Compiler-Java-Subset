@@ -16,7 +16,7 @@ BBlock *MulExpression::genIR(BBlock *currblock, std::string &ret_name)
         (*it)->genIR(currblock, rns_name);
 
         std::string genTmp = genTmpName();
-        Tac in = Assignment("*", lns_name, rns_name, genTmp);
+        Tac *in = new Assignment("*", lns_name, rns_name, genTmp);
         currblock->tacinstructions.push_back(in);
         ret_name = genTmp;
         return currblock;

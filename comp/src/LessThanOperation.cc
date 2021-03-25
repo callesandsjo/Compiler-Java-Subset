@@ -17,7 +17,7 @@ BBlock* LessThanOperation::genIR(BBlock *currblock, std::string &ret_name)
     (*it)->genIR(currblock, exp);
 
     std::string name = genTmpName();
-    Tac in = Assignment("LessThan", identifier, exp, name);
+    Tac *in = new Assignment("LessThan", identifier, exp, name);
     currblock->tacinstructions.push_back(in);
     std::cout<< "Added lessTan tac to "<<currblock->name<<std::endl;
 

@@ -11,7 +11,7 @@ BBlock* ExpressionExmark::genIR(BBlock *currblock, std::string &ret_name)
     std::string exp;
     (*it)->genIR(currblock, exp);
     
-    Tac in = Uassignment("!", exp, tmp);
+    Tac *in = new Uassignment("!", exp, tmp);
     currblock->tacinstructions.push_back(in);
     return currblock;
 }

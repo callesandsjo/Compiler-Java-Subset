@@ -18,7 +18,7 @@ BBlock* AndOperation::genIR(BBlock *currblock, std::string &ret_name)
     std::string exp;
     (*it)->genIR(currblock, exp);
 
-    Tac in = Assignment("AND", identifier, exp, name);
+    Tac *in = new Assignment("AND", identifier, exp, name);
     currblock->tacinstructions.push_back(in);
     return currblock;
 }

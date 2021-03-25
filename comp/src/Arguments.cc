@@ -13,7 +13,7 @@ BBlock *Arguments::genIR(BBlock *currblock, std::string &ret_name)
         i++;
         std::string arg;
         (*i)->genIR(currblock, arg);
-        Tac in = Copy(arg, genTmpName());
+        Tac *in = new Copy(arg, genTmpName());
         currblock->tacinstructions.push_back(in);
     }
     return currblock;
