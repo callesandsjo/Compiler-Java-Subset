@@ -6,9 +6,10 @@
 %option noyywrap nounput batch noinput stack
 %%
 
+"*"                         {return yy::parser::make_MULT(yytext);}
 "+"                         {return yy::parser::make_PLUS(yytext);}
 "="                         {return yy::parser::make_EQ(yytext);}
-"*"                         {return yy::parser::make_MULT(yytext);}
+
 "<"                         {return yy::parser::make_LESSTHAN(yytext);}
 "-"                         {return yy::parser::make_MIN(yytext);}
 "&&"                        {return yy::parser::make_AND(yytext);}

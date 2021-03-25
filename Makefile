@@ -18,4 +18,4 @@ dirs:
 	mkdir -p build/ && mkdir -p bin/
 clean:
 		rm -f parser.tab.* lex.yy.c* bin/compiler stack.hh tree.dot tree.pdf build/*
-		rm -R bin/compiler.dSYM
+		#rm -R bin/compiler.dSYM

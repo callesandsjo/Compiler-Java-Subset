@@ -52,7 +52,7 @@ class MethodCallExpression : public TAC {
 
 class ParameterExpression : public TAC {
     public:
-        ParameterExpression(std::string left) : TAC("param", left, "", "", false){} //x := call y N
+        ParameterExpression(std::string left) : TAC("param", left, "", "", false){} //x := param y
 };
 
 class ReturnExpression : public TAC {

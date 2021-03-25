@@ -205,7 +205,7 @@ Statement: LM Statements RM
             }
          | SYSTEMOUTPRINT LP Expression RP SEMICOLON
             {
-              $$ = new Node("Statement", "Syst print ");
+              $$ = new Node("Statement", "Syst print");
               $$->add_child($3); 
             }
          | Identifier EQ Expression SEMICOLON

@@ -3,13 +3,14 @@
 
 #include "ThreeAddressCodes.h"
 #include <list>
+#include "../../frontend/Node.h"
 
-class BasicBlock {
+class BasicBlock : public Node {
     public:
     std::string name;
     std::list<TAC> tacs;
     uint16_t tempVars;
-    TAC *cond;
+    std::string cond;
 
     BasicBlock *trueBlock, *falseBlock;
     BasicBlock()

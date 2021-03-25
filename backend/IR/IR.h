@@ -11,10 +11,13 @@
 
 struct IR : public Visitor{
     std::list<BasicBlock*> CFGs;
+    uint16_t nBlock;
     BasicBlock *currentBlock; //helper for knowing which block should be modified
     IR()
+    :   nBlock(0)
     {
         currentBlock = new BasicBlock();
+        currentBlock->name = genName(true);
     }
     void visit(Node *node) override { //Visiting in postorder
         if (node == nullptr)
@@ -59,7 +62,7 @@ struct IR : public Visitor{
                 
                 //Unary expression
                 auto it = node->children.begin();
-                TAC *newUnaryExp = new UnaryExpression(genName(), "!", genExpTAC((*it))); //result, lhs, operation, rhs
+                TAC *newUnaryExp = new UnaryExpression(genName(), "!", genExpTAC((*it)));
                 this->currentBlock->addTAC(newUnaryExp);
                 return newUnaryExp->result;
             }
@@ -102,16 +105,36 @@ struct IR : public Visitor{
 
         return node->value;
     }
-    std::string genName()
-    {
 
-        return "t" + to_string(currentBlock->tempVars++);
+    std::string genName(bool isBlock=false)
+    {
+        if (!isBlock)
+            return "t" + to_string(currentBlock->tempVars++);
+        return "block_" + to_string(this->nBlock++);
 
     }
     void parseNode(Node *node) {
         
         if(node->type == "Statement")
         {
+            /*if(node->value == "IF")
+            {
+                //Getting condition
+                auto it = node->children.begin();
+                currentBlock->cond = genExpTAC(*it);
+
+                BasicBlock *trueBlock = new BasicBlock();
+                trueBlock->name = genName(true);
+                trueBlock->parent = this->currentBlock;
+                currentBlock->trueBlock = trueBlock;
+
+                BasicBlock *falseBlock = new BasicBlock();
+                falseBlock->name = genName(true);
+                falseBlock->parent = this->currentBlock;
+                currentBlock->falseBlock = falseBlock;
+
+                currentBlock = trueBlock;
+            }*/
             if(node->value == "Assigning" || node->value == "ELSE Assigning")
             {
                 auto it = node->children.begin();
@@ -124,7 +147,7 @@ struct IR : public Visitor{
                 TAC *newListAssignment = new ListAssignment(genExpTAC((*it)), genExpTAC((*++it)), genExpTAC((*++it)));
                 currentBlock->addTAC(newListAssignment);
             }
-            else if (node->value == "sys print" || node->value == "IF" || node->value == "WHILE")
+            else if (node->value == "Syst print" || node->value == "IF" || node->value == "WHILE")
             {
                 auto it = node->children.begin();
                 TAC *newListAssignment = new Assignment(genName(), genExpTAC((*it)));
