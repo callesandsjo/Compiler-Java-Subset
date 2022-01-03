@@ -1,1 +1,1 @@
-# DV1585kompilator
+# Compiler for java subset
